@@ -16,7 +16,7 @@ public class Prepred_Statement {
             else{
                 System.out.println("Failed");
             }
-            String query="insert into courses ( course_name,course_duration)values(?,?)";
+            String query="  insert into courses ( course_name,course_duration)values(?,?)";
            PreparedStatement stmt= conn.prepareStatement(query);
 
 
