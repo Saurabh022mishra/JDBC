@@ -1,39 +1,52 @@
 import java.sql.*;
 
-public class Scrollable_ResultSet {
-    public static void main(String args[]){
-        try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/university","root","12345"))
+public class Scrollable_ResultSet
+{
+    public static void main(String args[])
+    {
+        String url = "jdbc:mysql://localhost:3306/university";
+        String username = "root";
+        String password = "12345";
+
+        try(Connection conn = DriverManager.getConnection(url, username, password))
         {
-            if(conn != null){
-                System.out.println("Connected to database.....");
-            }
-            else{
-                System.out.println("Failed to connect.....");
-            }
-            String sql = "Select * from student";
-            Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-            ResultSet result = statement.executeQuery(sql);
-            result.first();
-            readStudentInfo("first",result);
-            result.relative(3);
-            readStudentInfo("relative(3)",result);
-            result.previous();
-            readStudentInfo("previous",result);
-            result.absolute(4);
-            readStudentInfo("absolute(4)",result);
+            String sql = "SELECT * FROM student";
+
+            Statement st = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+            ResultSet result = st.executeQuery(sql);
+
+            System.out.println("Cursor position " + result.getRow() + ", is before first ? " + result.isBeforeFirst());
+
+            result.next();
+
+            System.out.println("Cursor position " + result.getRow() + ", is first ? " + result.isFirst());
+
             result.last();
-            readStudentInfo("last",result);
-            result.relative(-2);
-            readStudentInfo("relative(-2)",result);
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
-    private static void readStudentInfo(String position, ResultSet result)throws SQLException {
-        String name = result.getString("name");
-        int age = result.getInt("age");
-        String studentInfo = "%s:%s-%d\n";
-        System.out.format(studentInfo, position, name, age);
-    }
+
+            System.out.println("Cursor position " + result.getRow() + ", is last ? " + result.isLast());
+
+            result.afterLast();
+
+            System.out.println("Cursor position " + result.getRow() + ", is after last ? " + result.isAfterLast());
+
+            result.absolute(3);
+
+            System.out.println("Cursor position " + result.getRow());
+
+            result.absolute(-1);
+
+            System.out.println("Cursor position " + result.getRow() + ", is last ? " + result.isLast());
+
+            result.absolute(-4);
+
+            System.out.println("Cursor position " + result.getRow());
+
+            result.relative(5);
+
+            System.out.println("Cursor position " + result.getRow() + ", is after last ? " + result.isAfterLast());
+            result.relative(-13);
+            System.out.println("Cursor position " + result.getRow() + ", is before first ? " + result.isBeforeFirst());}
+        catch(Exception e) {}}
 }
