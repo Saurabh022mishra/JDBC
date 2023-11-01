@@ -8,24 +8,17 @@ public class Stored_procedure {
             else{
                 System.out.println("Failed");
             }
+            int result=0;
             String sql="{call AddtwoNumber(?,?)}";
             CallableStatement cs= conn.prepareCall(sql);
             cs.setInt(1,3);
             cs.setInt(2,4);
 
 
-            ResultSet resultSet = cs.executeQuery();
 
-            // Process the result set
-            while (resultSet.next()) {
-                // Retrieve data from the result set
-                int resultColumn1 = resultSet.getInt("column_name1");
-                String resultColumn2 = resultSet.getString("column_name2");
+           // ResultSet resultSet = cs.executeQuery();
 
-                // Do something with the retrieved data
-                System.out.println("Column 1: " + resultColumn1);
-                System.out.println("Column 2: " + resultColumn2);
-            }
+           System.out.println("Sucessfully Called");
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
